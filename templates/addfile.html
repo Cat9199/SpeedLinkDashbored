@@ -1,0 +1,128 @@
+{% extends 'base.html' %} 
+{% block content %}
+    <style>
+        /* Additional styling for the body */
+        body {
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Additional styling for the .form class */
+        .form {
+            border: 2px solid #007bff;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        /* Additional styling for the .upload-container class */
+        .upload-container {
+            margin-top: 30px;
+            text-align: center;
+            padding: 40px;
+            background-color: #f0f0f0;
+            border: 2px dashed #007bff;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        /* Style for the "Upload" button */
+        .upload-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        /* Hover effect for the "Upload" button */
+        .upload-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Additional styling for the upload-container text */
+        .upload-text {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Styling for the file info display */
+        .file-info {
+            font-size: 18px;
+            margin-top: 20px;
+            background-color: #f9f9f9; /* Background color */
+            border: 1px solid #ccc; /* Border */
+            border-radius: 6px; /* Border radius */
+            padding: 20px; /* Padding */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Box shadow */
+        }
+
+        /* Styling for the file info headings */
+        .file-info p {
+            margin: 8px 0;
+            font-weight: bold;
+        }
+
+        /* Styling for the file info data */
+        .file-info span {
+            color: #007bff; /* Text color for data */
+        }
+
+        /* Media query for responsiveness */
+        @media screen and (max-width: 768px) {
+            /* Your existing media query styles */
+        }
+    </style>
+    
+    <center>
+        <p><strong>لتحميل نموذج للملف المراد رفعة </strong>  <a href="/static/SpeedLink.xlsx">اضغط هنا</a></p>
+        <div class="file-info" id="fileInfo" style="display: none;">
+            <p><strong>File Name:</strong> <span id="fileName"></span></p>
+            <p><strong>File Size:</strong> <span id="fileSize"></span> bytes</p>
+            <p><strong>File Directory:</strong> <span id="fileDirectory"></span></p>
+            <p><strong>File Type:</strong> <span id="fileType"></span></p>
+        </div>
+        
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <div class="upload-container" id="form2" onclick="uploadFile()">
+                <label for="fileInput" class="upload-text">Drag and drop your files here or click to select files.</label>
+                <input type="file" id="fileInput" name="file" style="display: none;" accept=".csv ,.xlsx">
+                <span class="upload-button">Choose File</span>
+            </div>
+            <!-- Add a separate submit button for the form -->
+            <input type="submit" value="Upload" class="upload-button" style="margin-top: 20px;">
+        </form>
+    </center>
+    <script>
+        // JavaScript to handle file input and display file information
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileNameDisplay = document.getElementById('fileName');
+        const fileSizeDisplay = document.getElementById('fileSize');
+        const fileDirectoryDisplay = document.getElementById('fileDirectory');
+        const fileTypeDisplay = document.getElementById('fileType');
+
+        function uploadFile() {
+            fileInput.click();
+        }
+
+        fileInput.addEventListener('change', () => {
+            const selectedFile = fileInput.files[0];
+            if (selectedFile) {
+                // Display file information
+                fileInfo.style.display = 'block';
+                fileNameDisplay.textContent = selectedFile.name;
+                fileSizeDisplay.textContent = selectedFile.size;
+                fileDirectoryDisplay.textContent = selectedFile.webkitRelativePath || selectedFile.name;
+                fileTypeDisplay.textContent = selectedFile.type;
+            }
+        });
+    </script>
+{% endblock %}

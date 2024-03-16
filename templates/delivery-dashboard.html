@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speed link</title>
+    <!-- main css file -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css')}}" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        center {
+            padding: 30px 0 0;
+        }
+        
+        .container {
+            min-height: 100vh;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(200px, 400px));
+            gap: 20px;
+            padding: 40px 80px;
+            justify-content: center;
+            align-content: center;
+            width: 100%;
+        }
+        
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            min-height: 250px;
+        }
+        
+        .card svg {
+            max-width: 70%;
+            flex: 1;
+            border-radius: 8px;
+        }
+        
+        .btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #403f3f;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        /* Media query for responsiveness */
+        
+        @media screen and (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            .card {
+                padding: 15px;
+            }
+            .btn {
+                font-size: 12px;
+                padding: 8px 15px;
+            }
+        }
+        
+        .notification-button {
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        .notification-icon {
+            width: 20px;
+            height: 20px;
+            fill: rgb(0, 0, 0);
+            margin-right: 4px;
+        }
+        
+        .notification-badge {
+            right: -6px;
+            top: 0;
+            margin: 0 10px 0 0;
+            width: 20px;
+            height: 20px;
+            background-color: rgb(0, 0, 0);
+            border-radius: 50%;
+        }
+        
+        .notification-badge-number {
+            color: rgb(255, 255, 255);
+            font-size: 16px;
+            font: bold;
+        }
+        
+        .notification-text {
+            color: rgb(0, 0, 0);
+            font-size: 16px;
+        }
+    </style>
+    <style>
+        .grid-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 40px 80px;
+            justify-content: center;
+            align-content: center;
+            width: 100%;
+        }
+        
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            padding: 20px 20px 50px 20px;
+            min-height: 250px;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 95%;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        .card img {
+            width: 70px;
+            flex: 0;
+        }
+        
+        .card-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px 150px;
+            margin-bottom: 30px;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .card-header {
+                flex-direction: column;
+                font-size: 20px;
+                align-items: center;
+                justify-content: flex-start;
+                width: 95%;
+                padding: 20px;
+                gap: 20px;
+            }
+            .card-content {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                text-align: center;
+            }
+        }
+        
+        body {
+            background-color: #fff;
+        }
+        
+        .input-container {
+            align-items: center;
+            position: relative;
+        }
+        
+        #startCamera,
+        #button2 {
+            padding: 8px 12px;
+            border: none;
+            background-color: #000000;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #button2 {
+            margin-left: 10px;
+            background-color: #000000;
+        }
+        
+        #inputField {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+            text-align: right;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        #cameraStream {
+            width: 100%;
+        }
+        
+        #closeModal {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <!-- Normalize library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/quagga"></script>
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body dir="rtl">
+    <header class="header">
+        <div class="logo">
+            <img src="{{ url_for('static',filename='images/logo.jpg')}}" alt="Speed Link Logo" />
+            <h1 class="name">Speed Link</h1>
+        </div>
+        <div class="header-content">
+
+        </div>
+    </header>
+
+    <div class="container">
+        <center>
+            <h2>
+                مرحبا,
+                <span>{{ username }}</span>
+            </h2>
+        </center>
+
+
+        <div id="cameraStreamContainer" style="display: none;">
+            <video id="cameraStream" autoplay></video>
+        </div>
+        <div id="resultContainer"></div>
+
+        <center>
+            <div class="input-container">
+                <button id="startCamera"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upc-scan" viewBox="0 0 16 16">
+                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5zM3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
+                  </svg></button>
+                <input type="number" id="inputField" maxlength="15"  placeholder="أدخل شيئًا...">
+                <button id="button2">تحقق</button>
+            </div>
+        </center>
+        
+        <div class="grid-container">
+            {% for s in sh %}
+            <div class="card">
+                <br />
+                <div class="card-header">
+                    <img src="{{ url_for('static',filename='images/box.svg')}}" alt="Image 1" />
+                    <h3>تفاصيل الشحنة</h3>
+                </div>
+                <div class="card-content">
+                    <p>
+                        <strong>اسم المشحون إليه:</strong> {{ s.recipient_name }}
+                    </p>
+                    <p>
+                        <strong>إسم الشاحن:</strong> {{ s.shipper_name }}
+                    </p>
+                    <p>
+                        <strong>رقم المشحون إليه:</strong> {{ s.recipient_phone_1 }}
+                    </p>
+                    <p>
+                        <strong>عنوان المشحون إليه:</strong> {{ s.recipient_address }}
+                    </p>
+                    <p>
+                        <strong>التاريخ:</strong> {{ s.delivery_date }}
+                    </p>
+                    <p>
+                        <strong>الحالة:</strong> {{ s.shipment_status }}                </p>
+                </div>
+                <div class="card-footer">
+                    <a href="/track/{{ s.barcode }}" class="btn">المزيد</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <center>
+        <footer class="footer">
+            <p>
+                &copy; Develped by
+                <a href="#">Abdulrahman Nasr</a> and
+                <a href="#">Baraa Mohamed</a>
+            </p>
+        </footer>
+    </center>
+    <script src="{{ url_for('static', filename='js/barcode.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+    <script>
+    </script>
+</body>
+
+
+
+</html>

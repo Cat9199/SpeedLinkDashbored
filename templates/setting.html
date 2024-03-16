@@ -1,0 +1,308 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+
+    .profile-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .user-avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+        font-size: 36px;
+        margin: 20px 0;
+        color: #333;
+    }
+
+    .profile-details table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .profile-details td {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .label {
+        font-weight: bold;
+        color: #666;
+        width: 150px;
+    }
+
+    .profile-details td:last-child {
+        text-align: right;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .readonly {
+        border: none;
+        background-color: transparent;
+        pointer-events: none;
+        font-size: 16px;
+    }
+
+    .edit-button,
+    .submit-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .edit-button:hover,
+    .submit-button:hover {
+        background-color: #45a049;
+    }
+
+    .edit-button {
+        margin-right: 10px;
+    }
+
+    .submit-button {
+        margin-top: 20px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+
+    }/* style.css */
+
+/* Reset some default browser styles */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    font-size: 36px;
+    margin: 20px 0;
+    color: #333;
+}
+
+.profile-details {
+    margin-top: 30px;
+}
+
+.profile-details table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.profile-details td {
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.label {
+    font-weight: bold;
+    color: #666;
+    width: 150px;
+    padding-right: 20px;
+}
+
+.profile-details td:last-child {
+    text-align: right;
+    font-weight: bold;
+    color: #333;
+}
+
+.readonly {
+    border: none;
+    background-color: transparent;
+    pointer-events: none;
+    font-size: 16px;
+    color: #333;
+}
+
+.edit-button,
+.submit-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-button:hover,
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+.edit-button {
+    margin-right: 10px;
+}
+
+.submit-button {
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+</style>
+
+<title>ملف المستخدم</title>
+
+<div class="profile-container">
+<div class="profile-header">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png" alt="صورة المستخدم" class="user-avatar">
+    <h1>ملف المستخدم</h1>
+</div>
+<div class="profile-details">
+    <form action="/update_profile/{{ info.id }}" method="post">
+        <table>
+            <tr>
+                <td class="label">الاسم:</td>
+                <td>
+                    <input type="text" name="name" value="{{ info.name }}" class="readonly" readonly>
+                    <button type="button" class="edit-button" onclick="enableField(this)">تعديل</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">اسم المستخدم:</td>
+                <td>
+                    <input type="text" name="username" value="{{ info.username }}" class="readonly" readonly>
+                    <button type="button" class="edit-button" onclick="enableField(this)">تعديل</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">كلمة المرور:</td>
+                <td>
+                    <input type="password" name="password" value="{{ info.password }}" class="readonly" readonly>
+                    <button type="button" class="edit-button" onclick="enableField(this)">تعديل</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">المنصب:</td>
+                <td>
+                    <input type="text" name="position" value="{{ info.position }}" class="readonly" readonly>
+                    <button type="button" class="edit-button" onclick="enableField(this)">تعديل</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">رقم الشركة:</td>
+                <td>
+                    <input type="number" name="CompanyID" value="{{ info.CompanyID }}" class="readonly" readonly>
+                    <button type="button" class="edit-button" onclick="enableField(this)">تعديل</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">رمز الوصول:</td>
+                <td>
+                    <input type="text" name="AccessToken" value="{{ info.AccessToken }}" class="readonly" readonly>
+                    <button type="button" class="edit-button" onclick="enableField(this)">تعديل</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">اللغة:</td>
+                <td>
+                    <input type="text" name="Language" value="{{ info.Language }}" class="readonly" readonly>
+                    <button type="button" class="edit-button" onclick="enableField(this)">تعديل</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">نوع المحتوى:</td>
+                <td>
+                    <input type="text" name="Content_Type" value="{{ info.Content_Type }}" class="readonly" readonly>
+                    <button type="button" class="edit-button" onclick="enableField(this)">تعديل</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">المحافضة:</td>
+                <td>
+                    <input type="text" name="city" value="{{ info.city }}" class="readonly" readonly>
+                    <button type="button" class="edit-button" onclick="enableField(this)">تعديل</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">العنوان:</td>
+                <td>
+                    <input type="text" name="address" value="{{ info.address }}" class="readonly" readonly>
+                    <button type="button" class="edit-button" onclick="enableField(this)">تعديل</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">الهاتف:</td>
+                <td>
+                    <input type="text" name="phone" value="{{ info.phone1 }}" class="readonly" readonly>
+                    <button type="button" class="edit-button" onclick="enableField(this)">تعديل</button>
+                </td>
+            </tr>
+        </table>
+        <button type="submit" class="submit-button">تحديث الملف</button>
+    </form>
+</div>
+</div>
+
+<script>
+function enableField(button) {
+    var td = button.parentNode;
+    var input = td.querySelector('input');
+    input.removeAttribute('readonly');
+    input.classList.remove('readonly');
+    input.focus();
+    button.style.display = 'none';
+}
+</script>
+
+{% endblock %}

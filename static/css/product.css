@@ -1,0 +1,111 @@
+/* Reset some default styles for better consistency */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* background: none; */
+    max-height: 100vh;
+}
+
+.container,
+body {
+    max-height: 100vh;
+}
+
+
+/* Style the product status list */
+
+.status-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto;
+    position: relative;
+    width: fit-content;
+}
+
+.status-list::before {
+    content: '';
+    width: 5px;
+    height: 90%;
+    background-color: #ccc;
+    margin-right: 15px;
+    position: absolute;
+    right: -50px;
+    top: 50%;
+    bottom: 50%;
+    transform: translateY(-50%);
+    border-radius: 50px;
+}
+
+.status-item {
+    display: flex;
+    margin-bottom: 20px;
+    width: 500px;
+    position: relative;
+}
+
+.status-item.active .status-content {
+    border-color: #00c500;
+    border-width: 4px;
+    color: #000;
+}
+
+.status-item::before {
+    content: '';
+    width: 12.5px;
+    height: 12.5px;
+    position: absolute;
+    top: 50%;
+    right: -38.5px;
+    transform: translateY(-50%);
+    background-color: #000;
+    border-radius: 50%;
+}
+
+.status-item.active::before {
+    background-color: #00c500;
+}
+
+
+/* Style the status content */
+
+.status-content {
+    background-color: #aeaeae23;
+    padding: 15px;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    color: #4141414b;
+    width: 100%;
+}
+
+.status-content h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.status-content p {
+    font-size: 16px;
+}
+
+
+/* Media query for responsiveness */
+
+@media screen and (max-width: 768px) {
+    .status-list {
+        align-items: center;
+    }
+    .status-item {
+        width: 250px;
+    }
+}
+
+button.cta-btn {
+    background-color: #e90000;
+    border: none;
+}

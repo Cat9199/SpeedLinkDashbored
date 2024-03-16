@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speed link</title>
+    <link href="https://fonts.cdnfonts.com/css/barcode-font" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/barcode-font" rel="stylesheet">
+   
+    <!-- main css file -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/product.css') }}" />
+    <link href="https://fonts.cdnfonts.com/css/barcode-font" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&family=Libre+Barcode+39+Extended&family=Readex+Pro:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href='https://fonts.googleapis.com/css?family=Libre Barcode 39' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #fff;
+        }
+        
+        .section {
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: right;
+            max-width: 400px;
+        }
+        
+        .barcode {
+            font-size: 50px;
+            text-align: center;
+            margin-top: 10px;
+            font-family: 'barcodeFont', Arial, sans-serif;
+         
+        }
+        
+        .barcode p {
+            font-family: 'barcodeFont', Arial, sans-serif;
+            font-size: 24px;
+        }
+        
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            appearance: none;
+            /* Remove default appearance */
+            background: url('https://cdn.jsdelivr.net/npm/arrow-down-icon-v2@1.1.5/dist/arrow-down-icon-light.svg') no-repeat;
+            background-size: 20px;
+            background-position: calc(100% - 10px) center;
+            padding-right: 30px;
+            /* Space for the arrow icon */
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .generate-btn {
+            background-color: #000000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            order: 2;
+            /* To change the order and place the button on the right */
+        }
+    </style>
+</head>
+
+<body dir="rtl">
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="{{ url_for('static',filename='images/logo.jpg')}}" alt="Speed Link Logo" />
+                <h1 class="name">Speed Link</h1>
+            </div>
+            <div class="header-content">
+                {% if session.user_type == 'delivery' or session.user_type == 'admin' or session.user_type == 'shipper'%}
+                <a href="/dashboard" class="cta-btn" style="background-color:rgb(0, 251, 255);">لوحت التحكم</a>
+                <a href="/stopshipping/{{ info.id }}" class="cta-btn" style="background-color:red;">إيقاف الشحن</a> {% endif %}
+            </div>
+        </header>
+        <br>
+        <center>
+            <div class="section">
+                <h1>معلومات العميل</h1>
+                <div class="barcode">
+                    <p class="barcode">{{ info.barcode }}</p>
+                </div>
+                <br>
+                <p><strong>الاسم:</strong>{{ info.recipient_name }}</p>
+                <p><strong>رقم الهاتف الاول:</strong>{{ info.recipient_phone_1 }}</p>
+                <p><strong>رقم الهاتف الثاني:</strong>{{ info.recipient_phone_2 }}</p>
+                <p><strong>المدينة:</strong>
+                    {% if info.recipient_city == '1' %}
+                    القاهرة
+                {% elif info.recipient_city == '2' %}
+                    البحيرة
+                {% elif info.recipient_city == '3' %}
+                    الاسكندرية
+                {% elif info.recipient_city == '4' %}
+                    الدلتا
+                {% elif info.recipient_city == '5' %}
+                    الاسماعيلية
+                {% elif info.recipient_city == '6' %}
+                    بورسعيد
+                {% elif info.recipient_city == '7' %}
+                    السويس
+                {% elif info.recipient_city == '8' %}
+                    الشرقية
+                {% elif info.recipient_city == '9' %}
+                    بنى سويف
+                {% elif info.recipient_city == '10' %}
+                    المنيا
+                {% elif info.recipient_city == '11' %}
+                    اسيوط
+                {% elif info.recipient_city == '12' %}
+                    سوهاج
+                {% elif info.recipient_city == '13' %}
+                    الساحل الشمالي
+                {% elif info.recipient_city == '14' %}
+                    مطروح
+                {% elif info.recipient_city == '15' %}
+                    قنا
+                {% elif info.recipient_city == '16' %}
+                    الاقصر
+                {% elif info.recipient_city == '17' %}
+                    اسوان
+                {% elif info.recipient_city == '18' %}
+                    شرم الشيخ
+                {% elif info.recipient_city == '19' %}
+                    الغردقة
+                {% elif info.recipient_city == '20' %}
+                    مدن البحر الاحمر
+                {% elif info.recipient_city == '21' %}
+                    الفيوم
+                {% elif info.recipient_city == '22' %}
+                    خارج التغطية
+                {% elif info.recipient_city == '23' %}
+                    موقوف
+                {% elif info.recipient_city == '24' %}
+                    ش
+                {% elif info.recipient_city == '25' %}
+                    منصورة
+                {% elif info.recipient_city == '26' %}
+                    قليوب
+                {% else %}
+                    City not found
+                {% endif %}</p>
+                <p><strong>العنوان:</strong>{{ info.recipient_address }}</p>
+                <p><strong>اجمالي السعر:</strong>{{ info.tprice }}L.E</p>
+                {% if session.user_type == 'delivery' or session.user_type == 'admin'%}
+                <br>
+                <form action="/changstates/{{ info.barcode }}" method="POST">
+                    <div class="btn-container">
+                        <select name="shipment_status">
+                            <option value="شحنة جديدة">شحنة جديدة</option>
+                            <option value="تم استلامها">تم استلامها</option>
+                            <option value="غادرت">غادرت</option>
+                            <option value="في طريقها للتوصيل">في طريقها للتوصيل</option>
+                            <option value="تم توصيل الشحنة">تم توصيل الشحنة</option>
+                            <option value="لم يتم تسليم الشحنة">لم يتم تسليم الشحنة</option>
+                            <option value="مغلق او غير متاح">مغلق أو غير متاح</option>
+                            <option value="لا يرد">لا يرد</option>
+                            <option value="رفض الاستلام">رفض الاستلام</option>
+                            <option value="تأجيل نزول المنطقة">تأجيل نزول المنطقة</option>
+                            <option value="تأجيل بطلب العميل">تأجيل بناءً على طلب العميل</option>
+                         </select>
+                        <button class="generate-btn">اضافة</button>
+                    </div>
+                </form>
+
+                {% endif %}
+            </div>
+        </center>
+        <div class="status-list">
+            {% for s in D %}
+            <div class="status-item {% if s.state == info.shipment_status %}active{% endif %}">
+                <div class="status-content">
+                    <h3>{{ s.state }}</h3>
+                    <p>{{ s.created_at }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <center>
+            <footer class="footer">
+                <p>
+                    &copy; Develped by
+                    <a href="#">Abdulrahman Nasr</a> and
+                    <a href="#">Baraa Mohamed</a>
+                </p>
+            </footer>
+        </center>
+    </div>
+</body>
+
+</html>

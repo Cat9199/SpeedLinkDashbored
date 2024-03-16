@@ -1,0 +1,117 @@
+
+    
+    {% extends 'base.html' %} {% block content %}
+        
+<style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {background-color: #f2f2f2;}
+    .aa {
+        background-color: #192f93;
+        color: white;
+        padding: 1px 5px;
+        text-decoration: none;
+        border-radius: 25px;
+      }
+    </style>
+    {% for date, shipments in shipments_by_date.items() %}
+
+<br>
+    <h2>تاريخ توصيل الشحنة: {{ date }}</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+<th>باركود</th>
+<th>الشاحن</th>
+<th>المشحون له</th>
+<th>سعر الشحنة</th>
+<th>سعر التوصيل</th>
+<th>اجمالي السعر</th>
+<th>الحالة</th>
+<th>المدينة</th>
+        </tr>
+        {% for shipment in shipments %}
+        <tr>
+            <td>{{ shipment.id }}</td>
+            <td><a class="aa" href="/track/{{ shipment.barcode }}">{{ shipment.barcode }}</a></td>
+            <td>{{ shipment.shipper_name }}</td>
+            <td>{{ shipment.recipient_name }}</td>
+            <td>{{ shipment.pprice }}</td>
+            <td>{{ shipment.dprice }}</td>
+            <td>{{ shipment.tprice }}</td>
+            <td>
+                {% if shipment.shipment_status == 'تم توصيل الشحنة' %}
+               <p style="color: green;"> {{ shipment.shipment_status }}</p>
+            {% else %}
+            {{ shipment.shipment_status }}
+            {%endif%}
+            </td>
+            <th>
+                {% if shipment.recipient_city == '1' %}
+                القاهرة
+            {% elif shipment.recipient_city == '2' %}
+                البحيرة
+            {% elif shipment.recipient_city == '3' %}
+                الاسكندرية
+            {% elif shipment.recipient_city == '4' %}
+                الدلتا
+            {% elif shipment.recipient_city == '5' %}
+                الاسماعيلية
+            {% elif shipment.recipient_city == '6' %}
+                بورسعيد
+            {% elif shipment.recipient_city == '7' %}
+                السويس
+            {% elif shipment.recipient_city == '8' %}
+                الشرقية
+            {% elif shipment.recipient_city == '9' %}
+                بنى سويف
+            {% elif shipment.recipient_city == '10' %}
+                المنيا
+            {% elif shipment.recipient_city == '11' %}
+                اسيوط
+            {% elif shipment.recipient_city == '12' %}
+                سوهاج
+            {% elif shipment.recipient_city == '13' %}
+                الساحل الشمالي
+            {% elif shipment.recipient_city == '14' %}
+                مطروح
+            {% elif shipment.recipient_city == '15' %}
+                قنا
+            {% elif shipment.recipient_city == '16' %}
+                الاقصر
+            {% elif shipment.recipient_city == '17' %}
+                اسوان
+            {% elif shipment.recipient_city == '18' %}
+                شرم الشيخ
+            {% elif shipment.recipient_city == '19' %}
+                الغردقة
+            {% elif shipment.recipient_city == '20' %}
+                مدن البحر الاحمر
+            {% elif shipment.recipient_city == '21' %}
+                الفيوم
+            {% elif shipment.recipient_city == '22' %}
+                خارج التغطية
+            {% elif shipment.recipient_city == '23' %}
+                موقوف
+            {% elif shipment.recipient_city == '24' %}
+                ش
+            {% elif shipment.recipient_city == '25' %}
+                منصورة
+            {% elif shipment.recipient_city == '26' %}
+                قليوب
+            {% else %}
+                City not found
+            {% endif %}</th>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endfor %}
+    {% endblock %}

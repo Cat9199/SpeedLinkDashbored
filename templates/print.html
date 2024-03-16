@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill of Lading</title>
+    <link href="https://fonts.cdnfonts.com/css/barcode-font" rel="stylesheet">
+    <style>
+        /* Style the Bill of Lading container */
+        .bol {
+            width: 210mm;
+            /* A4 width */
+            height: 100mm;
+            /* One-third of A4 height */
+            border: 1px dotted #414141;
+            /* Add a border */
+            padding: 10px;
+            box-sizing: border-box;
+            /* Include padding and border in sizing */
+            /* page-break-before: always; */
+            /* Comment out or remove this line */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Style the header section */
+        .header {
+            text-align: center;
+            margin: 0 0 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Style the logo */
+        .logo {
+            max-width: 100%;
+            height: auto;
+            order: 1;
+        }
+
+        /* Style the title */
+        h1 {
+            font-size: 18px;
+        }
+
+        /* Style the barcode (you can use a library for this) */
+
+        .barcode {
+            font-family: 'barcode font', sans-serif;
+            font-size: 50px;
+            order: 3;
+        }
+
+        /* Style the cards */
+        .card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            flex-grow: 1;
+            box-sizing: border-box;
+        }
+
+        /* Style the info container */
+        .info {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Style the shipper and recipient sections */
+        .shipper,
+        .recipient {
+            width: 48%;
+            /* Half of the container width with a little gap */
+        }
+
+        /* Style the comments box */
+        .comment-box {
+            margin-top: 10px;
+            height: calc(100% - 150px);
+            /* Adjust as needed */
+            /* This will set the comment box height based on the remaining space */
+        }
+
+        /* Style the print button */
+        #printButton {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #printButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    {% for x in info %}
+    <div class="bol">
+        <div class="header">
+            <img alt='Barcode Generator TEC-IT' src='https://barcode.tec-it.com/barcode.ashx?data=https://speedlink-delivery.com/track/{{ x.barcode }}&code=MobileQRUrl' width="50px" height="50px" />
+         
+            <p>Date: 2023-9-12</p>
+              <div class="barcode">{{ x.barcode }}</div>
+            <img src="https://speedlink-delivery.com/static/images/logob.png" alt="Company Logo" width="50px"
+                class="logo">
+        </div>
+
+        <!-- Shipper & Recipient Info Card -->
+        <div class="card" style="margin: -20px 0;">
+            <div class="info" style="margin: -20px 0;">
+                <div class="shipper">
+                    <h3>From</h3>
+                    <strong>Name : </strong>{{ x.shipper_name }}<br>
+                    <strong>Phone 1 : </strong>** <br>
+                    <strong>Phone 2 : </strong>**<br>
+                    <strong>City : </strong>** <br>
+                    <strong>Addres : </strong>**
+                </div>
+                <div class="recipient">
+                    <h3>To</h3>
+                    <strong>Name : </strong>{{ x.recipient_name }}<br>
+                    <strong>Phone 1 : </strong>{{ x.recipient_phone_1 }}<br>
+                    <strong>Phone 2 : </strong>{{ x.recipient_phone_2 }}<br>
+                    <strong>City : </strong> {% if x.recipient_city == '1' %}
+                    القاهرة
+                {% elif x.recipient_city == '2' %}
+                    البحيرة
+                {% elif x.recipient_city == '3' %}
+                    الاسكندرية
+                {% elif x.recipient_city == '4' %}
+                    الدلتا
+                {% elif x.recipient_city == '5' %}
+                    الاسماعيلية
+                {% elif x.recipient_city == '6' %}
+                    بورسعيد
+                {% elif x.recipient_city == '7' %}
+                    السويس
+                {% elif x.recipient_city == '8' %}
+                    الشرقية
+                {% elif x.recipient_city == '9' %}
+                    بنى سويف
+                {% elif x.recipient_city == '10' %}
+                    المنيا
+                {% elif x.recipient_city == '11' %}
+                    اسيوط
+                {% elif x.recipient_city == '12' %}
+                    سوهاج
+                {% elif x.recipient_city == '13' %}
+                    الساحل الشمالي
+                {% elif x.recipient_city == '14' %}
+                    مطروح
+                {% elif x.recipient_city == '15' %}
+                    قنا
+                {% elif x.recipient_city == '16' %}
+                    الاقصر
+                {% elif x.recipient_city == '17' %}
+                    اسوان
+                {% elif x.recipient_city == '18' %}
+                    شرم الشيخ
+                {% elif x.recipient_city == '19' %}
+                    الغردقة
+                {% elif x.recipient_city == '20' %}
+                    مدن البحر الاحمر
+                {% elif x.recipient_city == '21' %}
+                    الفيوم
+                {% elif x.recipient_city == '22' %}
+                    خارج التغطية
+                {% elif x.recipient_city == '23' %}
+                    موقوف
+                {% elif x.recipient_city == '24' %}
+                    ش
+                {% elif x.recipient_city == '25' %}
+                    منصورة
+                {% elif x.recipient_city == '26' %}
+                    قليوب
+                {% else %}
+                    City not found
+                {% endif %} <br>
+                    <strong>Addres : </strong>{{ x.recipient_address }}
+                </div>
+            </div>
+        </div>
+        <div class="card" style="margin: -20px 0;">
+            <div class="info" style="margin: -20px 0;">
+                <div class="shipper">
+                    <h3>Shipper Comment</h3>
+                    <p>{{ x.shipper_note }}</p>
+                </div>
+                <div class="recipient">
+                    <h3>Recipient Comment</h3>
+                    <p>{{ x.recipient_note }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+<script>
+    window.onload = function() {
+        window.print();
+    };
+</script>
+</html>

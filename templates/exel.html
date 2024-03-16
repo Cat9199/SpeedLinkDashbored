@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block content %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Upload Results</title>
+  
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #table-container {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #cce5ff;
+        }
+
+        .status-Added {
+            background-color: #d4edda;
+        }
+
+        .status-Error {
+            background-color: #f8d7da;
+        }
+
+        .status-Pending {
+            background-color: #fff3cd;
+        }
+
+        .status-icon {
+            width: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+    </style>
+
+    <div id="container">
+        <div id="table-container">
+            <div class="rmb">
+            <h1 id="table-heading" class="mb-4">نتيجة الرفع</h1><a href="/dashboard" class="link" style="background-color: #343a40;">توجة للصفحة الرايسية
+
+            </a></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Message</th>
+                        <th>Username</th>
+                        <th>Shipment Date</th>
+                        <th>Recipient Name</th>
+                        <th>Shipper City</th>
+                        <th>Recipient City</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                        <tr class="status-{{ result['Status'] | lower }}">
+                            <td>
+                                {% if result['Status'] == 'Added' %}
+                                    <img src="https://emoji.discadia.com/emojis/c4f11de0-a7dc-4d04-b8c4-02222c3a4b64.png" alt="Added" class="status-icon">
+                                {% elif result['Status'] == 'Error' %}
+                                    <img src="https://cdn0.iconfinder.com/data/icons/shift-interfaces/32/Error-512.png" alt="Error" class="status-icon">
+                                {% endif %}
+                 
+                            </td>
+                            <td>{{ result['Message'] }}</td>
+                            <td>{{ result['Username'] }}</td>
+                            <td>{{ result['Shipment Date'] }}</td>
+                            <td>{{ result['Recipient Name'] }}</td>
+                            <td>{{ result['Shipper City'] }}</td>
+                            <td>{{ result['Recipient City'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

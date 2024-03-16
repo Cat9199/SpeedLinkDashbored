@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - الصفحة غير موجودة</title>
+<style>
+    body {
+        font-family: 'Your Desired Font', Arial, sans-serif;
+        text-align: center;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+    }
+    
+ 
+    
+    .error-container {
+        max-width: 900px;
+        margin: 100px auto;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: row;
+        text-align: left;
+    }
+    
+    .error-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .error-img img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    h1 {
+        color: #d9534f;
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+    
+    p {
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+    
+    a {
+        text-decoration: none;
+        background-color: #d9534f;
+        color: #fff;
+        padding: 15px 30px;
+        border-radius: 5px;
+        font-size: 24px;
+        transition: background-color 0.3s;
+    }
+    
+    a:hover {
+        background-color: #c9302c;
+    }
+        
+</style>
+    <link href="https://fonts.googleapis.com/css2?family=Your+Desired+Font&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-content">
+            <div class="error-logo">
+                <img src="{{ url_for('static', filename='images/logob.png') }}" alt="Your Logo" width="150">
+            </div>
+            <div class="error-img">
+                <img src="{{ url_for('static', filename='images/404.svg') }}" alt="404 خطأ" width="300" height="300">
+            </div>
+            <div class="error-text">
+                <h1>404 - الصفحة غير موجودة</h1>
+                <p>عذرًا! الصفحة التي تبحث عنها قد تم حذفها أو لا توجد.</p>
+                <a href="/">العودة إلى الصفحة الرئيسية</a>
+            </div>
+        </div>
+    </div>

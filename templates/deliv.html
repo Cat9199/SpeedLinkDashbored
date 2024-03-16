@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% block content %}<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.user-cards {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.user-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 10px;
+  width: 250px;
+  text-align: center;
+}
+
+.user-card img {
+  max-width: 100px;
+  border-radius: 50%;
+}
+
+.delete-button, .deliver-button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none; 
+  display: inline-block;
+}
+
+.deliver-button {
+  background-color: #4caf50;
+}
+
+</style>
+  <title>صفحة الحسابات</title>
+</head>
+<body>
+  <div class="user-cards">
+    {% for user in info %}
+    <div class="user-card">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw2iMTKL4JKh2Rc0f2RtU8-2QQr-Jj-9TVTA&usqp=CAU" alt="المستخدم 1">
+      <h2>{{ user.name }}</h2>
+      <p>@{{ user.username }}</p>
+      <a href="/tables/{{ user.id }}" class="deliver-button" style="background-color: cornflowerblue;">تفاصيل الشحن</a>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% endblock %}

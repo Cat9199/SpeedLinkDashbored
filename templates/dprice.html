@@ -1,0 +1,542 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+
+    .profile-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .user-avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+        font-size: 36px;
+        margin: 20px 0;
+        color: #333;
+    }
+
+    .profile-details table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .profile-details td {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .label {
+        font-weight: bold;
+        color: #666;
+        width: 150px;
+    }
+
+    .profile-details td:last-child {
+        text-align: right;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .readonly {
+        border: none;
+        background-color: transparent;
+        pointer-events: none;
+        font-size: 16px;
+    }
+
+    .edit-button,
+    .submit-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .edit-button:hover,
+    .submit-button:hover {
+        background-color: #45a049;
+    }
+
+    .edit-button {
+        margin-right: 10px;
+    }
+
+    .submit-button {
+        margin-top: 20px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+
+    }/* style.css */
+
+/* Reset some default browser styles */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    font-size: 36px;
+    margin: 20px 0;
+    color: #333;
+}
+
+.profile-details {
+    margin-top: 30px;
+}
+
+.profile-details table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.profile-details td {
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.label {
+    font-weight: bold;
+    color: #666;
+    width: 150px;
+    padding-right: 20px;
+}
+
+.profile-details td:last-child {
+    text-align: right;
+    font-weight: bold;
+    color: #333;
+}
+
+.readonly {
+    border: none;
+    background-color: transparent;
+    pointer-events: none;
+    font-size: 16px;
+    color: #333;
+}
+
+.edit-button,
+.submit-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-button:hover,
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+.edit-button {
+    margin-right: 10px;
+}
+
+.submit-button {
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+</style>
+
+
+
+<div class="profile-container">
+<div class="profile-header">
+    
+</div>
+<div class="profile-details">
+    <form action="/saveprice/{{ price.sid }}" method="post">
+        <table><tr>
+          <td class="label">القاهرة:</td>
+          <td>
+            <input
+              type="text"
+              name="1"
+              value="{{ price.p1 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">البحيرة:</td>
+          <td>
+            <input
+              type="text"
+              name="2"
+              value="{{ price.p2 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">الاسكندرية:</td>
+          <td>
+            <input
+              type="text"
+              name="3"
+              value="{{ price.p3 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">الدلتا:</td>
+          <td>
+            <input
+              type="text"
+              name="4"
+              value="{{ price.p4 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">الاسماعيلية:</td>
+          <td>
+            <input
+              type="text"
+              name="5"
+              value="{{ price.p5 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">بورسعيد:</td>
+          <td>
+            <input
+              type="text"
+              name="6"
+              value="{{ price.p6 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">السويس:</td>
+          <td>
+            <input
+              type="text"
+              name="7"
+              value="{{ price.p7 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">الشرقية:</td>
+          <td>
+            <input
+              type="text"
+              name="8"
+              value="{{ price.p8 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">بنى سويف:</td>
+          <td>
+            <input
+              type="text"
+              name="9"
+              value="{{ price.p9 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">المنيا:</td>
+          <td>
+            <input
+              type="text"
+              name="10"
+              value="{{ price.p10 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">اسيوط:</td>
+          <td>
+            <input
+              type="text"
+              name="11"
+              value="{{ price.p11 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">سوهاج:</td>
+          <td>
+            <input
+              type="text"
+              name="12"
+              value="{{ price.p12 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">الساحل الشمالي:</td>
+          <td>
+            <input
+              type="text"
+              name="13"
+              value="{{ price.p13 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">مطروح:</td>
+          <td>
+            <input
+              type="text"
+              name="14"
+              value="{{ price.p14 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">قنا:</td>
+          <td>
+            <input
+              type="text"
+              name="15"
+              value="{{ price.p15 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">الاقصر:</td>
+          <td>
+            <input
+              type="text"
+              name="16"
+              value="{{ price.p16 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">اسوان:</td>
+          <td>
+            <input
+              type="text"
+              name="17"
+              value="{{ price.p17 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">شرم الشيخ:</td>
+          <td>
+            <input
+              type="text"
+              name="18"
+              value="{{ price.p18 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">الغردقة:</td>
+          <td>
+            <input
+              type="text"
+              name="19"
+              value="{{ price.p19 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">مدن البحر الاحمر:</td>
+          <td>
+            <input
+              type="text"
+              name="20"
+              value="{{ price.p20 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">الفيوم:</td>
+          <td>
+            <input
+              type="text"
+              name="21"
+              value="{{ price.p21 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">خارج التغطية:</td>
+          <td>
+            <input
+              type="text"
+              name="22"
+              value="{{ price.p22 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">موقوف:</td>
+          <td>
+            <input
+              type="text"
+              name="23"
+              value="{{ price.p23 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">ش:</td>
+          <td>
+            <input
+              type="text"
+              name="24"
+              value="{{ price.p24 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">منصورة:</td>
+          <td>
+            <input
+              type="text"
+              name="25"
+              value="{{ price.p25 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="label">قليوب:</td>
+          <td>
+            <input
+              type="text"
+              name="26"
+              value="{{ price.p26 }}"
+              class="readonly"
+              readonly
+            />L.E<a href="#" class="edit-button" onclick="enableField(this)">تعديل</a>
+          </td>
+        </tr>
+        </table>
+          
+        <button type="submit" class="submit-button">تحديث الملف</button>
+    </form>
+</div>
+</div>
+
+<script>
+function enableField(button) {
+    var td = button.parentNode;
+    var input = td.querySelector('input');
+    input.removeAttribute('readonly');
+    input.classList.remove('readonly');
+    input.focus();
+    button.style.display = 'none';
+}
+</script>
+
+{% endblock %}

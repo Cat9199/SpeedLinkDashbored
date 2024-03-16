@@ -1,0 +1,121 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+.profile-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.user-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    font-size: 36px;
+    margin: 10px 0;
+    color: #333;
+}
+
+.profile-details table {
+    width: 100%;
+}
+
+.profile-details td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.label {
+    font-weight: bold;
+    color: #666;
+    width: 150px;
+}
+
+.profile-details td:last-child {
+    text-align: right;
+    font-weight: bold;
+    color: #333;
+}
+.wallet-button {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color:green;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 0 30px 0 0;
+    }
+</style>
+
+    <title>ملف المستخدم</title>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png" alt="صورة المستخدم" class="user-avatar">
+            <h1>ملف المستخدم</h1>
+        </div>
+        <div class="profile-details">
+            <table>
+                <tr>
+                    <td class="label">الاسم:</td>
+                    <td>{{ info.name }}</td>
+                </tr>
+                <tr>
+                    <td class="label">البريد الإلكتروني:</td>
+                    <td>{{ info.email }}</td>
+                </tr>
+                <tr>
+                    <td class="label">الهاتف 1:</td>
+                    <td>{{ info.phone1 }}</td>
+                </tr>
+                <tr>
+                    <td class="label">الهاتف 2:</td>
+                    <td>{{ info.phone2 }}</td>
+                </tr>
+                <tr>
+                    <td class="label">المدينة:</td>
+                    <td>{{ info.city }}</td>
+                </tr>
+                <tr>
+                    <td class="label">العنوان:</td>
+                    <td>{{ info.address }}</td>
+                </tr>
+                <tr>
+                    <td class="label">كود المحفظة:</td>
+                    <td>
+                        {{ info.wallet_code }}
+                        <a href="/viwewallets/{{ info.wallet_code }}" class="wallet-button">الانتقال إلى المحفظة</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">المستحقات:</td>
+                    <td>{{ info.dues }}L.E</td>
+                </tr>
+                <tr>
+                    <td class="label">الشحنات:</td>
+                    <td>{{ info.shipments }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    {% endblock %}

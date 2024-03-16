@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>روابط سريعة</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+    integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.cdnfonts.com/css/barcode-font" rel="stylesheet">
+  <!-- In your HTML template (e.g., dashboard.html) --><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      font-family: "Cairo", sans-serif;
+      direction: rtl;
+      min-height: 100vh;
+    }
+.barcode {
+  font-family: 'barcode font', sans-serif;
+  font-size : 50px;
+}
+    .page {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    nav {
+      background-color: #fff;
+      color: #000;
+      width: 100%;
+      height: 60px;
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav img {
+      width: 80px;
+      /* Adjust the size of the logo as needed */
+    }
+
+    .name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    #toggleButton {
+      background: none;
+      border: none;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .sidebar {
+      background-color: red;
+      color: #fff;
+      width: 250px;
+      right: -250px;
+      padding-top: 20px;
+      /* position: fixed; */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      flex: 0 0 250px;
+      background-color: red;
+      color: #fff;
+      width: 250px;
+      padding-top: 100px;
+      transition: 0.3s ease-in-out;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    @media (max-width: 1200px) {
+      .sidebar {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        right: -100%;
+      }
+
+      .page {
+        display: block;
+      }
+    }
+
+    @media (max-width: 320px) {
+      nav {
+        padding: 10px;
+      }
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-logo img {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+    }
+
+    .sidebar-logo h1 {
+      font-size: 24px;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .link {
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      font-size: 18px;
+      text-decoration: none;
+      color: #fff;
+      transition: background-color 0.3s;
+    }
+
+    .link:hover {
+      background-color: #000;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-button {
+      padding: 10px 20px;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      width: 170px;
+    }
+
+    .dropdown-item {
+      padding: 10px 20px;
+      display: block;
+      text-decoration: none;
+      color: #000;
+    }
+
+    /* أضف هذا القاعدة لنقل رابط تسجيل الدخول إلى نهاية السايد بار */
+    .logout-link {
+      order: 99;
+      /* تأكد من أن القيمة هنا أكبر من أي رقم آخر لترتيب العناصر */
+      margin-top: auto;
+      /* لتوسيط العنصر في الأسفل */
+      margin-bottom: 20px;
+    }
+
+    #logo {
+      background: none;
+    }
+
+    .content {
+      flex: 1;
+      /* margin-top: 120px; */
+      /* padding: 30px 20% 0 10%; */
+      padding: 100px 20px;
+      /* display: none; */
+    }
+
+    .link svg {
+      margin: 0 0 0 10px;
+    }
+
+    .notification-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #fff;
+      /* قم بتغيير اللون حسب نوع الإشعار */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #000;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  </style>
+  <style>
+    /* Loading overlay styles */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+  
+    .loading-overlay img {
+      max-width: 100px; /* Adjust the max-width to fit your design */
+    }
+  
+    .loading-overlay p {
+      margin-top: 10px; /* Adjust the margin as needed */
+      font-size: 18px; /* Adjust the font size as needed */
+      color: #ffffff; /* Adjust the text color */
+    }
+  
+    .loading-spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 4px solid #3498db;
+      width: 40px;
+      height: 40px;
+      animation: spin 2s linear infinite;
+    }
+  
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  
+    /* Hide the loading overlay initially */
+    .hide {
+      display: none;
+    }
+/* style.css */
+/* style.css */
+/* style.css */
+#flash-messages {
+  position: fixed;
+  bottom: 20px; /* يضع الرسائل في الجزء السفلي من الصفحة مع تباعد من الأسفل */
+  right: 20px; /* يمكن تعديله إلى left إذا كنت تفضل ذلك */
+  z-index: 9999;
+}
+
+.message {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff; /* خلفية بيضاء للرسائل */
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 200%; /* العرض الأقصى للرسائل هو 60% من العرض الكلي للنافذة */
+}
+
+.message-text {
+  flex: 1;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 20px; /* إضافة تباعد من اليمين للنص داخل الرسالة */
+}
+
+.icon {
+  font-size: 24px;
+  margin-right: 15px;
+  color: #333; /* لون أيقونات أغمق */
+}
+
+.close-button {
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #333; /* لون أيقونة إغلاق */
+}
+
+.close-button:hover {
+  color: #f44336; /* تغيير لون أيقونة إغلاق عند التمرير بالفأرة عليها */
+}
+
+.progress-container {
+  height: 4px;
+  background-color: #ddd;
+  position: absolute;
+  bottom: 0; /* يوضع شريط التقدم في الجزء السفلي من الرسالة */
+  left: 0;
+  right: 0;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 100%;
+  background-color: #4caf50;
+  animation: progress-animation 3s linear forwards;
+}
+
+@keyframes progress-animation {
+  0% {
+      width: 100%;
+  }
+  100% {
+      width: 0%;
+  }
+}
+
+</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logob.png') }}" />
+</head>
+
+<body dir="rtl">
+  <nav>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/logob.png') }}" alt="" />
+      <h1 class="name">Speed Link</h1>
+    </div>
+    {% if session.user_type == 'admin' %}
+    <div class="search-container">
+      <input type="text" name="search_query" id="search_query" placeholder="Start typing to search">
+      <div id="search_results" class="search-results"></div>
+  </div>
+  {%endif%}
+  
+    <button id="toggleButton">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#000" class="bi bi-list" viewBox="0 0 16 16">
+        <path fill-rule="evenodd"
+          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+      </svg>
+    </button>
+    
+  </nav>
+ <style>/* Basic styling for the search container */
+  .search-container {
+      position: relative;
+      width: 100%;
+      max-width: 400px; /* Adjust the max-width as needed */
+      margin: 0 auto;
+  }
+  
+  /* Style for the search input */
+  #search_query {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+  }
+  
+  /* Style for the results container */
+  .search-results {
+      display: none;
+      position: absolute;
+      width: 100%;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+      max-height: 200px;
+      overflow-y: auto;
+  }
+  
+  /* Style for each result item */
+  .result-item {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      cursor: pointer;
+  }
+  
+  /* Highlight on hover */
+  .result-item:hover {
+      background-color: #f2f2f2;
+  }
+  
+  
+ </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('search_query');
+      const searchResults = document.getElementById('search_results');
+  
+      searchInput.addEventListener('input', debounce(onSearchInput, 300));
+  
+      function onSearchInput() {
+          const query = searchInput.value;
+  
+          if (query.length === 0) {
+              searchResults.innerHTML = '';
+              hideResults();
+              return;
+          }
+  
+          fetch(`/api/search?query=${query}`)
+              .then(response => response.json())
+              .then(results => {
+                  displayResults(results);
+              })
+              .catch(error => {
+                  console.error('Error fetching search results:', error);
+              });
+      }
+  
+      function displayResults(results) {
+          searchResults.innerHTML = '';
+  
+          if (results.length === 0) {
+              hideResults();
+              return;
+          }
+  
+          for (const result of results) {
+              const resultItem = createResultItem(result);
+              searchResults.appendChild(resultItem);
+          }
+  
+          showResults();
+      }
+  
+      function createResultItem(result) {
+          const resultItem = document.createElement('div');
+          resultItem.className = 'result-item';
+          resultItem.innerHTML = `
+              <strong>Barcode: ${result.barcode}</strong><br>
+              Shipper Name: ${result.shipper_name}<br>
+              Shipper Phone 1: ${result.shipper_phone_1}<br>
+              Recipient Name: ${result.recipient_name}<br>
+              Recipient Phone 1: ${result.recipient_phone_1}<br>
+          `;
+          resultItem.addEventListener('click', () => {
+              navigateToResultPage(result.barcode);
+          });
+          return resultItem;
+      }
+  
+      function navigateToResultPage(barcode) {
+          window.location.href = `/track/${barcode}`;
+      }
+  
+      function hideResults() {
+          searchResults.style.display = 'none';
+      }
+  
+      function showResults() {
+          searchResults.style.display = 'block';
+      }
+  
+      function debounce(func, delay) {
+          let timeout;
+          return function () {
+              clearTimeout(timeout);
+              timeout = setTimeout(func, delay);
+          };
+      }
+  });
+  
+    
+  </script>
+  <div class="page">
+    <div class="sidebar" id="sidebar">
+      <a href="/dashboard" class="link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door-fill"
+          viewBox="0 0 16 16">
+          <path
+            d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z" />
+        </svg>لوحة التحكم</a>
+      
+      <a href="/archive" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
+        <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
+      </svg>الارشيف</a>
+      {% if session.user_type == 'shipper' %}
+      <a href="/profile" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-person-circle" viewBox="0 0 16 16">
+          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+          <path fill-rule="evenodd"
+            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+        </svg>
+        الملف الشخصي</a>
+
+      <a href="/viwewallets/{{ session.wellat }}" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+          height="16" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+          <path
+            d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z" />
+        </svg>
+        المحفظة</a>
+      {%endif%} {% if session.user_type == 'admin' %}
+      <a href="/notifications" class="link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill"
+          viewBox="0 0 16 16">
+          <path
+            d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z">
+          </path>
+        </svg>الإشعارات
+        <div class="notification-num" style="
+              display: inline;
+              border-radius: 50%;
+              background-color: #fff;
+              color: #000;
+              padding: 4px 8px;
+            ">
+          {{ session.numn }}
+        </div>
+      </a>
+      <a href="/setting" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-gear-fill" viewBox="0 0 16 16">
+          <path
+            d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+        </svg>الإعدادات</a>
+     
+      <a href="/req" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-slash-square-fill" viewBox="0 0 16 16">
+          <path
+            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm9.354 5.354-6 6a.5.5 0 0 1-.708-.708l6-6a.5.5 0 0 1 .708.708z" />
+        </svg>الطلبات</a>
+      <a href="/stop" class="link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sign-stop-fill"
+          viewBox="0 0 16 16">
+          <path
+            d="M10.371 8.277v-.553c0-.827-.422-1.234-.987-1.234-.572 0-.99.407-.99 1.234v.553c0 .83.418 1.237.99 1.237.565 0 .987-.408.987-1.237Zm2.586-.24c.463 0 .735-.272.735-.744s-.272-.741-.735-.741h-.774v1.485h.774Z" />
+          <path
+            d="M4.893 0a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146A.5.5 0 0 0 11.107 0H4.893ZM3.16 10.08c-.931 0-1.447-.493-1.494-1.132h.653c.065.346.396.583.891.583.524 0 .83-.246.83-.62 0-.303-.203-.467-.637-.572l-.656-.164c-.61-.147-.978-.51-.978-1.078 0-.706.597-1.184 1.444-1.184.853 0 1.386.475 1.436 1.087h-.645c-.064-.32-.352-.542-.797-.542-.472 0-.77.246-.77.6 0 .261.196.437.553.522l.654.161c.673.164 1.06.487 1.06 1.11 0 .736-.574 1.228-1.544 1.228Zm3.427-3.51V10h-.665V6.57H4.753V6h3.006v.568H6.587Zm4.458 1.16v.544c0 1.131-.636 1.805-1.661 1.805-1.026 0-1.664-.674-1.664-1.805V7.73c0-1.136.638-1.807 1.664-1.807 1.025 0 1.66.674 1.66 1.807ZM11.52 6h1.535c.82 0 1.316.55 1.316 1.292 0 .747-.501 1.289-1.321 1.289h-.865V10h-.665V6.001Z" />
+        </svg>الشحنات الموقوفة </a>
+      <a href="/sendtodelivery" class="link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-event"
+          viewBox="0 0 16 16">
+          <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
+          <path
+            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+        </svg>جدولت الشحنات</a>
+        <a href="/fm" class="link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
+            <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z"/>
+          </svg>الشحنات المرفوعة</a>
+      <a href="/print" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-printer-fill" viewBox="0 0 16 16">
+          <path
+            d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z" />
+          <path
+            d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
+        </svg>طباعة</a>
+
+      <a href="/users" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-person-fill" viewBox="0 0 16 16">
+          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+        </svg>العملاء</a>
+        <a href="/deliv" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-person-fill" viewBox="0 0 16 16">
+          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+        </svg>المناديب</a>
+<a href="/async" class="link">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+    <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+    <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+  </svg>مزامنت السيرفر
+</a>
+      <a href="/dashboard" class="link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+          fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+          <path
+            d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+        </svg>اعادة تحميل النظام</a><a href="/download_database" class="link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-layer-backward"
+          viewBox="0 0 16 16">
+          <path
+            d="M8.354 15.854a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708l1-1a.5.5 0 0 1 .708 0l.646.647V4H1a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9v7.793l.646-.647a.5.5 0 0 1 .708 0l1 1a.5.5 0 0 1 0 .708l-3 3z" />
+          <path
+            d="M1 9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4.5a.5.5 0 0 1 0 1H1v2h4.5a.5.5 0 0 1 0 1H1zm9.5 0a.5.5 0 0 1 0-1H15V6h-4.5a.5.5 0 0 1 0-1H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4.5z" />
+        </svg>تحميل نسخة احتياطية</a><br />
+
+      <div class="dropdown">
+        
+        <button class="dropdown-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-person-fill-add" viewBox="0 0 16 16">
+            <path
+              d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            <path
+              d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
+          </svg>إضافة حساب<svg style="margin: 0 10px 0 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-sign-yield-fill" viewBox="0 0 16 16">
+            <path d="M10.48 5.323h-.28v1.353h.28c.372 0 .54-.222.54-.674 0-.45-.169-.68-.54-.68Z" />
+            <path
+              d="M7.022 14.434a1.131 1.131 0 0 0 1.96 0l6.857-11.667c.457-.778-.092-1.767-.98-1.767H1.144c-.889 0-1.437.99-.98 1.767l6.857 11.667ZM5.506 6.232V7H5.11v-.76L4.44 5h.44l.424.849h.016L5.748 5h.428l-.67 1.232ZM6.628 5v2h-.396V5h.396Zm.684 1.676h.895V7H6.919V5h1.288v.324h-.895v.513h.842v.303h-.842v.536Zm1.521-.013h.848V7H8.437V5h.396v1.663Zm.97.337V5h.73c.608 0 .895.364.895.995 0 .636-.291 1.005-.895 1.005h-.73Z" />
+          </svg></button>
+        <br />
+        
+        <div class="dropdown-content">
+          <a href="/adds" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+              fill="currentColor" class="bi bi-person-badge" viewBox="0 0 16 16">
+              <path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+              <path
+                d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-.492C11.392 12.387 10.063 12 8 12s-3.392.387-4.224.803a4.2 4.2 0 0 0-.776.492V2.5z" />
+            </svg>حساب عميل</a>
+          <a href="/addd" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+              fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
+              <path
+                d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+            </svg>حساب مندوب</a>
+        </div>
+      </div>
+
+      <p style="color: red">...</p>
+      {%endif%}
+      <div class="dropdown">
+        <button class="dropdown-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam-fill"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M15.528 2.973a.75.75 0 0 1 .472.696v8.662a.75.75 0 0 1-.472.696l-7.25 2.9a.75.75 0 0 1-.557 0l-7.25-2.9A.75.75 0 0 1 0 12.331V3.669a.75.75 0 0 1 .471-.696L7.443.184l.01-.003.268-.108a.75.75 0 0 1 .558 0l.269.108.01.003 6.97 2.789ZM10.404 2 4.25 4.461 1.846 3.5 1 3.839v.4l6.5 2.6v7.922l.5.2.5-.2V6.84l6.5-2.6v-.4l-.846-.339L8 5.961 5.596 5l6.154-2.461L10.404 2Z" />
+          </svg>اضافت شحنات<svg style="margin: 0 3px 0 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+            fill="currentColor" class="bi bi-sign-yield-fill" viewBox="0 0 16 16">
+            <path d="M10.48 5.323h-.28v1.353h.28c.372 0 .54-.222.54-.674 0-.45-.169-.68-.54-.68Z" />
+            <path
+              d="M7.022 14.434a1.131 1.131 0 0 0 1.96 0l6.857-11.667c.457-.778-.092-1.767-.98-1.767H1.144c-.889 0-1.437.99-.98 1.767l6.857 11.667ZM5.506 6.232V7H5.11v-.76L4.44 5h.44l.424.849h.016L5.748 5h.428l-.67 1.232ZM6.628 5v2h-.396V5h.396Zm.684 1.676h.895V7H6.919V5h1.288v.324h-.895v.513h.842v.303h-.842v.536Zm1.521-.013h.848V7H8.437V5h.396v1.663Zm.97.337V5h.73c.608 0 .895.364.895.995 0 .636-.291 1.005-.895 1.005h-.73Z" />
+          </svg>
+        </button>
+        <div class="dropdown-content">
+          <a href="/addushipment" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+              fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+              <path
+                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+              <path fill-rule="evenodd"
+                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+            </svg>إضافة يدوية</a>
+          <a href="/addfile" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+              fill="currentColor" class="bi bi-file-earmark-spreadsheet" viewBox="0 0 16 16">
+              <path
+                d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V9H3V2a1 1 0 0 1 1-1h5.5v2zM3 12v-2h2v2H3zm0 1h2v2H4a1 1 0 0 1-1-1v-1zm3 2v-2h3v2H6zm4 0v-2h3v1a1 1 0 0 1-1 1h-2zm3-3h-3v-2h3v2zm-7 0v-2h3v2H6z" />
+            </svg>رفع ملف</a>
+        </div>
+      </div>
+      <br />
+      <a href="/logout" class="link logout-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+          fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
+          <path fill-rule="evenodd"
+            d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+        </svg>تسجيل الخروج من {{ session.username }}</a>
+    </div>
+
+    <div class="content">
+    
+      <div class="loading-overlay" id="loadingOverlay">
+        <img src="{{ url_for('static', filename='images/logob.png') }}" alt="Loading Image">
+        <p>Loading...</p>
+        <div class="loading-spinner"></div>
+      </div>
+    <!-- flash_messages.html -->
+<!-- flash_messages.html -->
+
+    <h1>{{ paget }}</h1>
+
+      <div class="">{% block content %} {% endblock %}</div>
+    </div>
+  </div><!-- flash_messages.html -->
+  <div id="flash-messages">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              <ul class="messages">
+                  {% for category, message in messages %}
+                      <li class="message {{ category }}">
+                          <div class="icon">
+                              {% if category == 'success' %}
+                                  <i class="fas fa-check-circle"></i>
+                              {% elif category == 'error' %}
+                                  <i class="fas fa-exclamation-circle"></i>
+                              {% elif category == 'pros' %}
+                                  <i class="fas fa-spinner fa-spin"></i>
+                              {% endif %}
+                          </div>
+                          <div class="message-text">{{ message }}</div>
+                          <div class="close-button" onclick="this.parentElement.style.display='none';">
+                              <i class="fas fa-times-circle"></i>
+                          </div>
+                          <div class="progress-container">
+                              <div class="progress-bar"></div>
+                          </div>
+                      </li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+      {% endwith %}
+  </div>
+  
+  <script>
+    // Get references to the sidebar and button
+    const sidebar = document.getElementById("sidebar");
+    const toggleButton = document.getElementById("toggleButton");
+
+    // Add a click event listener to the button
+    toggleButton.addEventListener("click", () => {
+      // Toggle the sidebar by changing its left position
+      if (sidebar.style.right === "0") {
+        sidebar.style.right = "-100%";
+      } else {
+        sidebar.style.right = "0";
+      }
+    });
+  </script>
+  <script>
+    // Function to show the loading overlay
+    function showLoading() {
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      loadingOverlay.classList.remove('hide');
+    }
+  
+    // Function to hide the loading overlay
+    function hideLoading() {
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      loadingOverlay.classList.add('hide');
+    }
+  
+    // Call showLoading() when a page starts loading
+    showLoading();
+  
+    // Call hideLoading() when the page has finished loading (e.g., in an onload event)
+    window.onload = hideLoading;
+  </script>
+  <script>
+// script.js
+document.addEventListener('DOMContentLoaded', function () {
+  const flashMessages = document.querySelectorAll('.message');
+  flashMessages.forEach(function (message) {
+      setTimeout(function () {
+          message.style.display = 'none'; // Hide the message
+      }, 3000); // 3000 milliseconds (3 seconds)
+  });
+});
+
+  </script>
+</body>
+
+</html>

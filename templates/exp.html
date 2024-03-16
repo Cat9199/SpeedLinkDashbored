@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    @media print {
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .invoice {
+            width: 21cm;
+            height: 29.7cm;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            page-break-after: always;
+        }
+
+        .invoice h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .invoice-details p {
+            margin: 5px 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            flex: 1;
+        }
+
+        .title {
+            flex: 1;
+            text-align: center;
+        }
+
+        .barcode {
+            flex: 1;
+            text-align: right;
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .product-table th,
+        .product-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .product-table th {
+            background-color: #f2f2f2;
+        }
+
+        .product-table td {
+            vertical-align: middle;
+        }
+
+        .total {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        .signature {
+            text-align: right;
+        }
+    }
+    .button{
+
+        padding: 5px 10px;
+        background-color: #2483ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none; 
+        display: inline-block;
+      }
+</style>
+
+<center>
+    <a href="" class="button" style="margin-top: 0;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+        <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
+        <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+      </svg>
+    <input type="button" class="button" onclick="printDiv('invoice')" value="طباعة الفاتورة" /></a>
+<a href="/f/{{ user.id }}" class="button" style="
+padding: 10px;
+"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-check" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+    <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+    <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+  </svg>تنظيف الحساب</a>
+</center>
+<div class="invoice" id="invoice">
+    <div class="header">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logob.png') }}" alt="صورة الجو">
+        </div>
+        <div class="title">
+            <h1>فاتورة</h1>
+        </div>
+        <div class="barcode">
+            34052855555555535
+        </div>
+    </div>
+    <br><br>
+    <div class="invoice-details" style="display: flex; justify-content: space-between;">
+        <div style="flex: 1;">
+            <p><strong>الاسم:</strong>{{ user.name }}</p>
+            <p><strong>اسم المستخدم:</strong>{{ user.username }}</p>
+            <p><strong>المدينة:</strong>  {% if user.city== '1' %}
+                القاهرة
+            {% elif user.city== '2' %}
+                البحيرة
+            {% elif user.city== '3' %}
+                الاسكندرية
+            {% elif user.city== '4' %}
+                الدلتا
+            {% elif user.city== '5' %}
+                الاسماعيلية
+            {% elif user.city== '6' %}
+                بورسعيد
+            {% elif user.city== '7' %}
+                السويس
+            {% elif user.city== '8' %}
+                الشرقية
+            {% elif user.city== '9' %}
+                بنى سويف
+            {% elif user.city== '10' %}
+                المنيا
+            {% elif user.city== '11' %}
+                اسيوط
+            {% elif user.city== '12' %}
+                سوهاج
+            {% elif user.city== '13' %}
+                الساحل الشمالي
+            {% elif user.city== '14' %}
+                مطروح
+            {% elif user.city== '15' %}
+                قنا
+            {% elif user.city== '16' %}
+                الاقصر
+            {% elif user.city== '17' %}
+                اسوان
+            {% elif user.city== '18' %}
+                شرم الشيخ
+            {% elif user.city== '19' %}
+                الغردقة
+            {% elif user.city== '20' %}
+                مدن البحر الاحمر
+            {% elif user.city== '21' %}
+                الفيوم
+            {% elif user.city== '22' %}
+                خارج التغطية
+            {% elif user.city== '23' %}
+                موقوف
+            {% elif user.city== '24' %}
+                ش
+            {% elif user.city== '25' %}
+                منصورة
+            {% elif user.city== '26' %}
+                قليوب
+            {% else %}
+                City not found
+            {% endif %}</p>
+            <p><strong>العنوان:</strong> {{ user.address }}</p>
+            <p><strong>رمز المحفظة:</strong> {{ user.wallet_code }}</p>
+        </div>
+        <div style="flex: 1;">
+            <p><strong>رقم الهاتف 1:</strong> {{ user.phone1 }}</p>
+            <p><strong>رقم الهاتف 2:</strong> {{ user.phone2 }}</p>
+            <p><strong>العنوان:</strong> {{ user.address }}</p>
+            <p><strong>تاريخ الاصدار:</strong>{{ date }}</p>
+            <p><strong>رقم العملية:</strong> [رقم العملية]</p>
+        </div>
+    </div><br><br>
+    <table class="product-table" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <tr>
+            <th style="border: 1px solid #ccc; padding: 8px; text-align: center; background-color: #f2f2f2;">الباركود</th>
+            <th style="border: 1px solid #ccc; padding: 8px; text-align: center; background-color: #f2f2f2;">اسم المنتج</th>
+            <th style="border: 1px solid #ccc; padding: 8px; text-align: center; background-color: #f2f2f2;">تاريخ التوصيل</th>
+            <th style="border: 1px solid #ccc; padding: 8px; text-align: center; background-color: #f2f2f2;">السعر</th>
+        </tr>
+        {% for s in ship %}
+        <tr>
+            <td style="border: 1px solid #ccc; padding: 8px; text-align: center;"><p class="barcode" style="font-size: 35px;">{{ s.barcode }}</p></td>
+            <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">{{ s.recipient_name }}</td>
+            <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">{{ s.delivery_date }}</td>
+            <td style="border: 1px solid #ccc; padding: 8px; text-align: center;">{{ s.pprice }}L.E</td>
+        </tr>
+        {% endfor %}
+        <!-- يمكنك إضافة صفوف إضافية حسب الحاجة -->
+    </table>
+    
+    <br><br>
+        <!-- يمكنك إضافة صفوف إضافية حسب الحاجة -->
+    </table>
+    <p class="total"><strong>الاجمالي:</strong>{{ tp }} جنية مصري</p>
+<br>
+    <div class="signature">
+        <p><strong>توقيع الاستلام:</strong> ___________________</p>
+    </div>
+</div>
+
+<script>
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>
+
+{% endblock %}

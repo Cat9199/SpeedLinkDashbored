@@ -1,0 +1,218 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  /* تصميم الصفحة هنا */
+
+  /* تعريف الحاوية للأعمدة */
+  .notification-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    justify-content: flex-start;
+  }
+  
+  /* تعريف أقسام منفصلة للإشعارات العادية وإشعارات المحفظة */
+  .notification-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* تصميم بطاقة الإشعار */
+  .notification-card {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    max-width: 600px;
+  }
+  
+  /* تصميم أيقونة الإشعار */
+  .notification-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 20px;
+  }
+  @media (max-width:1200px) {
+    .notification-container{
+      flex-direction: column;
+      padding: 0;
+    }
+    .notification-card{
+      margin: 0 auto;
+      width: 100%;
+    }
+    .notification-icon{
+      margin-right: 0;
+    }
+  }
+
+  /* تصميم نوع الإشعار (أيقونة) */
+  .notification-type {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ff5733; /* قم بتغيير اللون حسب نوع الإشعار */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    margin-right: 20px;
+  }
+
+  /* تصميم محتوى الإشعار */
+  .notification-content {
+    flex-grow: 1;
+  }
+
+  /* تصميم رسالة الإشعار */
+  .notification-message {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 18px;
+    color: #333;
+  }
+
+  /* تصميم تاريخ الإشعار */
+  .notification-date {
+    font-size: 14px;
+    color: #777;
+  }
+
+  /* تصميم زر "تحديد كمقروء" */
+  .mark-as-read-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+
+  /* تأثير تحويل البطاقة عند التمرير بالماوس عليها */
+  .notification-card:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  /* تصميم بطاقة إشعارات المحفظة */
+  .wallet-notification {
+    background-color: #e3ffdc;
+    border-left: 4px solid #00a65a; /* قم بتغيير اللون حسب نوع الإشعار */
+  }
+</style>
+
+<div class="notification-container">
+  <div class="notification-column">
+    <center>
+      <h2>
+        <svg
+          style="margin: 0 0 0 20px"
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          fill="currentColor"
+          class="bi bi-mailbox2"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M9 8.5h2.793l.853.854A.5.5 0 0 0 13 9.5h1a.5.5 0 0 0 .5-.5V8a.5.5 0 0 0-.5-.5H9v1z"
+          />
+          <path
+            d="M12 3H4a4 4 0 0 0-4 4v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7a4 4 0 0 0-4-4zM8 7a3.99 3.99 0 0 0-1.354-3H12a3 3 0 0 1 3 3v6H8V7zm-3.415.157C4.42 7.087 4.218 7 4 7c-.218 0-.42.086-.585.157C3.164 7.264 3 7.334 3 7a1 1 0 0 1 2 0c0 .334-.164.264-.415.157z"
+          /></svg
+        >اشعارات العمليات
+      </h2>
+    </center>
+    {% for x in n %}
+    <div class="notification-card">
+      <img
+        src="https://lordicon.com/icons/system/solid/46-notification-bell.svg"
+        alt="أيقونة جرس الإشعارات"
+        class="notification-icon"
+      />
+      <div class="notification-type">A</div>
+      <div class="notification-content">
+        <div class="notification-message">{{ x.messaget }}</div>
+        <div class="notification-date">{{ x.created_at }} <p style="margin: 0 10px;" >user : {{ x.username }}</p></div>
+      </div>
+      <a href="/makeasreed/{{ x.id }}" class="mark-as-read-button"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="26"
+          height="26"
+          fill="currentColor"
+          class="bi bi-check2-all"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"
+          />
+          <path
+            d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"
+          /></svg
+      ></a>
+    </div>{% endfor %}
+  </div>
+  <div class="notification-column">
+    <center>
+      <h2>
+        <svg
+          style="margin: 0 0 0 20px"
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          fill="currentColor"
+          class="bi bi-mailbox2"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
+          />
+          <path
+            d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H3z"
+          /></svg
+        >اشعارات المحافظ
+      </h2>
+    </center>
+    {% for i in w %}
+    <div class="notification-card wallet-notification">
+      <img
+        src="https://www.svgrepo.com/show/352675/wallet.svg"
+        alt="أيقونة المحفظة"
+        class="notification-icon"
+      />
+      <div class="notification-type">W</div>
+      <div class="notification-content">
+        <div class="notification-message">{{ i.messaget }}</div>
+        <div class="notification-date">{{ i.created_at }} <p style="margin: 0 10px;" >user : {{ i.username }}</p></div>
+      </div>
+      <a href="/makeasreed/{{ i.id }}" class="mark-as-read-button"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="26"
+          height="26"
+          fill="currentColor"
+          class="bi bi-check2-all"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"
+          />
+          <path
+            d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"
+          /></svg
+      ></a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

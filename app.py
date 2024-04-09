@@ -1278,13 +1278,84 @@ def render_shipment_tables(id):
     # Pass the shipments_by_date dictionary to the template
     return render_template('shipment_tables.html', shipments_by_date=shipments_by_date)
 
+# api for app to manage shipments
+@app.route('/api/app/shipments', methods=['GET'])
+def get_shipments():
+    shipments = Shipment.query.all()
+    shipment_list = []
+    for shipment in shipments:
+        shipment_data = {
+            'id': shipment.id,
+            'barcode': shipment.barcode,
+            'status': shipment.status,
+            'delivery_id': shipment.delivery_id,
+            'shipper_username': shipment.shipper_username,
+            'shipper_name': shipment.shipper_name,
+            'shipper_phone_1': shipment.shipper_phone_1,
+            'shipper_phone_2': shipment.shipper_phone_2,
+            'shipper_address': shipment.shipper_address,
+            'shipper_city': shipment.shipper_city,
+            'shipper_wallet_code': shipment.shipper_wallet_code,
+            'shipper_note': shipment.shipper_note,
+            'recipient_name': shipment.recipient_name,
+            'recipient_phone_1': shipment.recipient_phone_1,
+            'recipient_phone_2': shipment.recipient_phone_2,
+            'recipient_address': shipment.recipient_address,
+            'recipient_city': shipment.recipient_city,
+            'recipient_note': shipment.recipient_note,
+            'price': shipment.pprice,
+            'shipment_status': shipment.shipment_status,
+            'date': shipment.date,
+            'delivery_date': shipment.delivery_date,
+        }
+        shipment_list.append(shipment_data)
+    return jsonify(shipment_list)
+@app.route('/api/app/shipments/<int:id>', methods=['GET'])
+def get_shipment(id):
+    shipment = Shipment.query.get_or_404(id)
+    shipment_data = {
+        'id': shipment.id,
+        'barcode': shipment.barcode,
+        'status': shipment.status,
+        'delivery_id': shipment.delivery_id,
+        'shipper_username': shipment.shipper_username,
+        'shipper_name': shipment.shipper_name,
+        'shipper_phone_1': shipment.shipper_phone_1,
+        'shipper_phone_2': shipment.shipper_phone_2,
+        'shipper_address': shipment.shipper_address,
+        'shipper_city': shipment.shipper_city,
+        'shipper_wallet_code': shipment.shipper_wallet_code,
+        'shipper_note': shipment.shipper_note,
+        'recipient_name': shipment.recipient_name,
+        'recipient_phone_1': shipment.recipient_phone_1,
+        'recipient_phone_2': shipment.recipient_phone_2,
+        'recipient_address': shipment.recipient_address,
+        'recipient_city': shipment.recipient_city,
+        'recipient_note': shipment.recipient_note,
+        'price': shipment.pprice,
+        'shipment_status': shipment.shipment_status,
+        'date': shipment.date,
+        'delivery_date': shipment.delivery_date,
+    }
+    return jsonify(shipment_data)
+@app.route('/api/app/changestates/<barcode>', methods=['POST'])
+def changestatesapp(barcode):
+    if request.method == 'POST':
+        shipment_status = request.form['shipment_status']
+        s = Shipment.query.filter_by(barcode=barcode).first()
+        if s:
+            s.shipment_status = shipment_status
+            db.session.commit()
+            return jsonify({"message": "Status updated successfully"})
+        else:
+            return jsonify({"error": "Shipment not found"}), 404
 
 
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html'), 404
 
-# Custom error page for 500 to 505
+
 @app.errorhandler(500)
 @app.errorhandler(501)
 @app.errorhandler(502)
